@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -23,7 +24,8 @@ public class CsvQuestionDao implements QuestionDao {
         try (
                 InputStream inputStream = getClass().getClassLoader()
                         .getResourceAsStream(fileNameProvider.getTestFileName());
-                InputStreamReader reader = new InputStreamReader(inputStream)) {
+                InputStreamReader reader = new InputStreamReader(Objects.requireNonNull(inputStream
+                        ,"Resource not found: " + fileNameProvider.getTestFileName()))) {
             CsvToBean<QuestionDto> csvToBean = new CsvToBeanBuilder<QuestionDto>(reader)
                     .withType(QuestionDto.class)
                     .withSeparator(';')
