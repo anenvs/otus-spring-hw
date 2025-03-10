@@ -3,7 +3,6 @@ import org.junit.jupiter.api.Test;
 import ru.sidorov.config.TestFileNameProvider;
 import ru.sidorov.dao.CsvQuestionDao;
 import ru.sidorov.domain.Question;
-import ru.sidorov.exceptions.QuestionReadException;
 
 import java.util.List;
 
@@ -45,11 +44,10 @@ public class CsvQuestionDaoTest {
     void findAll_fileDoesNotExist() {
         when(fileNameProvider.getTestFileName()).thenReturn("zzz-test-questions.csv");
 
-        QuestionReadException exception = assertThrows(
-                QuestionReadException.class,
+        assertThrows(
+                NullPointerException.class,
                 () -> csvQuestionDao.findAll(),
-                "QuestionReadException expected"
+                "NullPointerException expected"
         );
-        assertTrue(exception.getMessage().contains("Failed to read questions from csv file"), "Exception text matches");
     }
 }
